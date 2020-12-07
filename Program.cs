@@ -8,6 +8,7 @@ public class Program
         //day3.Run();
         //day4.Run();
         //day5.Run();
-        day6.Run();
+        //day6.Run();
+        day7.Run();
     }
 }
