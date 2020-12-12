@@ -15,7 +15,7 @@ public class day10
     //Treat the charging outlet near your seat as having an effective joltage rating of 0
     public static void Run()
     {
-        List<string> input = ReadInputFile.GetInputAsLines("D:/C# projects/AdventOfCode2020/day10/day10Test1.txt");
+        List<string> input = ReadInputFile.GetInputAsLines("D:/C# projects/AdventOfCode2020/day10/day10.txt");
         List<int> adapters = GetAdapters(input);
 
         (int jolt1, int jolt2, int jolt3) = GetAllJoltsSolution1(adapters);
@@ -39,49 +39,32 @@ public class day10
 
         List<int> testingAdapter = new List<int>(sortedAdapters);
         List<int> previousAdapter;
+        List<int> canRemove = new List<int>();
 
-        for (int count2 = 0; count2 < sortedAdapters.Count; count2++)
+        Console.WriteLine();
+
+        for (int count1 = testingAdapter.Count -1; count1 > 1; count1--)
         {
-            testingAdapter = new List<int>();
-            for (int count1 = 0; count1 < sortedAdapters.Count - 2; count1++)
+            int adapter1, adapter2, adapter3, difference1And2, difference2And3;
+
+            adapter1 = sortedAdapters[count1];
+            adapter2 = sortedAdapters[count1 - 1];
+            adapter3 = sortedAdapters[count1 - 2];
+
+            difference1And2 = adapter1 - adapter2;
+            difference2And3 = adapter2 - adapter3;
+
+            Console.Write($"{adapter1}, ");
+
+            if ((difference1And2 == 1 && difference2And3 <= 2) || (difference1And2 == 2 && difference2And3 <= 1))
             {
-                int adapter1, adapter2, adapter3, difference1And2, difference2And3;
-
-                adapter1 = sortedAdapters[count1];
-                adapter2 = sortedAdapters[count1 + 1];
-                adapter3 = sortedAdapters[count1 + 2];
-
-                /*
-                if (count1 == sortedAdapters.Count - 1)
-                    adapter2 = sortedAdapters[sortedAdapters.Count - 1] + 3;
-                else
-                    adapter2 = sortedAdapters[count1 + 1];
-                */
-
-                difference1And2 = adapter2 - adapter1;
-                difference2And3 = adapter3 - adapter2;
-
-                Console.WriteLine($"Adapter1: {adapter1}, Adapter2: {adapter2}, Adapter3: {adapter3}");
-
-                if (difference1And2 == 1 && difference2And3 < 3)
-                {
-                    distinctArrangements++;
-                    continue;
-                }
-                else if (difference1And2 == 2 && difference2And3 < 3)
-                {
-                    distinctArrangements++;
-                    continue;
-                }
-                else if (difference1And2 == 3)
-                {
-                    distinctArrangements++;
-                    continue;
-                }
-
+                Console.Write($"Added: {adapter2}, ");
+                canRemove.Add(adapter2);
+                distinctArrangements++;
+                continue;
             }
-            previousAdapter = testingAdapter;
         }
+
         
         //Console.WriteLine($"Jolt1: {jolt1}, Jolt2: {jolt2}, Jolt3: {jolt3}, Solution1: {jolt1 * jolt3}");
         return distinctArrangements;
